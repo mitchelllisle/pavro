@@ -5,9 +5,8 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 
-setup_requirements = ['pytest-runner']
-
-test_requirements = ['pytest']
+with open('requirements-text.txt') as f:
+    test_requirements = f.read().splitlines()
 
 
 setup(
@@ -17,10 +16,10 @@ setup(
     description="A Python Avro Schema Builder",
     install_requires=requirements,
     packages=find_packages(),
-    setup_requires=setup_requirements,
+    setup_requires=[],
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/mitchelllisle/pyavro',
-    version='0.1.0',
+    version='0.2.0',
     zip_safe=False,
 )
