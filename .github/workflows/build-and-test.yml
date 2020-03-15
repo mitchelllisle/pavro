@@ -7,5 +7,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
+    - name: Install Tests
+      run: pip install -r requirements.txt
     - name: Run Tests
       run: python -m pytest --cov=pyavro
