@@ -1,0 +1,23 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.7.0, pytest-5.4.1, py-1.8.1, pluggy-0.13.1
+benchmark: 3.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /Users/mitchell/Documents/Projects/Packages/pyavro
+plugins: benchmark-3.2.3, cov-2.8.1
+collected 2 items
+
+tests/test_util.py ..                                                    [100%]
+
+---------- coverage: platform darwin, python 3.7.0-final-0 -----------
+Name                        Stmts   Miss  Cover
+-----------------------------------------------
+pyavro/__init__.py              2      0   100%
+pyavro/field/__init__.py        1      0   100%
+pyavro/field/field.py          29      9    69%
+pyavro/schema/__init__.py       1      0   100%
+pyavro/schema/schema.py        20      7    65%
+pyavro/util.py                  6      0   100%
+-----------------------------------------------
+TOTAL                          59     16    73%
+
+
+============================== 2 passed in 0.15s ===============================
