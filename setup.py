@@ -5,7 +5,7 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 
-with open('requirements-text.txt') as f:
+with open('requirements-test.txt') as f:
     test_requirements = f.read().splitlines()
 
 
