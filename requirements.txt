@@ -1,0 +1,3 @@
+pydantic==1.*
+fastavro==0.22.*
+funcy==1.*
