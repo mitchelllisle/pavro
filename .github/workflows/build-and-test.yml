@@ -8,6 +8,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install Tests
-      run: pip install -r requirements.txt
+      run: pip install -r requirements-test.txt
+    - name: Install Module
+      run: pip install .
     - name: Run Tests
       run: python -m pytest --cov=pyavro
