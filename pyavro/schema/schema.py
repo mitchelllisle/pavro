@@ -1,19 +1,17 @@
 from pydantic import BaseModel, Field, validator
 from typing import List
-import fastavro as avro
+import fastavro
 from pyavro.util import match_regex_expr_or_error
 from pyavro.field.field import AvroField
 
 
 class AvroSchema(BaseModel):
     """
-    Avro is used to define the data schema for a record's value. This schema describes the fields allowed in the value,
+    Avro uses a schema to define values in a record. This schema describes the fields allowed in the value,
     along with their data types.
 
-    You apply a schema to the value portion of an Oracle NoSQL Database record using Avro bindings.
-    These bindings are used to serialize values before writing them, and to deserialize values after reading them.
-    The usage of these bindings requires your applications to use the Avro data format, which means that each stored
-    value is associated with a schema.
+    The schema is stored inside an avro file as JSON, whereas the records themselves are stored as binary. This means
+    that every record inside an Avro file is guaranteed to conform to that schema.
 
     Args:
         type: Identifies the JSON field type. For Avro schemas, this must always be record when it is specified at
@@ -28,8 +26,8 @@ class AvroSchema(BaseModel):
 
         fields_: This is the actual schema definition. It defines what fields are contained in the value, and the
         data type for each field. A field can be a simple data type, such as an integer or a string, or it can
-        be complex data. Note: The field is prefixed with an underscore here because it clashes with Pydantic reserved
-        keywords. An alias is used here to ensure we deserialize with the right value.
+        be complex data. Note: The field is suffixed with an underscore here because it clashes with Pydantic reserved
+        keywords. An alias is used here to ensure we deserialize with the right value when we parse the schema.
     """
     type: str
     namespace: str
@@ -48,5 +46,5 @@ class AvroSchema(BaseModel):
 
     def parse(self):
         dict_schema = self.dict(by_alias=True)
-        parsed_schema = avro.parse_schema(dict_schema, _write_hint=False)
+        parsed_schema = fastavro.parse_schema(dict_schema, _write_hint=False)
         return parsed_schema
