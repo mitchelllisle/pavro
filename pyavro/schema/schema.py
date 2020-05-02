@@ -1,11 +1,12 @@
-from pydantic import BaseModel, Field, validator
+import pydantic as pyd
 from typing import List
 import fastavro
+import funcy as fn
 from pyavro.util import match_regex_expr_or_error
-from pyavro.field.field import AvroField
+from pyavro.field.field import Field
 
 
-class AvroSchema(BaseModel):
+class Schema(pyd.BaseModel):
     """
     Avro uses a schema to define values in a record. This schema describes the fields allowed in the value,
     along with their data types.
@@ -29,22 +30,23 @@ class AvroSchema(BaseModel):
         be complex data. Note: The field is suffixed with an underscore here because it clashes with Pydantic reserved
         keywords. An alias is used here to ensure we deserialize with the right value when we parse the schema.
     """
-    type: str
+    type: str = "record"
     namespace: str
     name: str
-    fields_: List[AvroField] = Field(..., alias="fields")
+    fields_: List[Field] = pyd.Field(..., alias="fields")
 
-    @validator('name')
+    @pyd.validator('name')
     def name_must_begin_with_letters(cls, value):
         expr = "^[A-Za-z_]"
         return match_regex_expr_or_error(value, 'name', expr)
 
-    @validator('name')
+    @pyd.validator('name')
     def name_must_only_contain(cls, value):
         expr = "[A-Za-z0-9_]"
         return match_regex_expr_or_error(value, 'name', expr)
 
     def parse(self):
+        self.fields_ = fn.lmap(lambda x: x._to_avro_type(), self.fields_)
         dict_schema = self.dict(by_alias=True)
         parsed_schema = fastavro.parse_schema(dict_schema, _write_hint=False)
         return parsed_schema

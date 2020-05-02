@@ -1,1 +1,1 @@
-from pyavro.schema.schema import AvroSchema
+from pyavro.schema.schema import Schema
