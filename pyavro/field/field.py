@@ -1,27 +1,26 @@
 from pydantic import BaseModel, root_validator
-from enum import Enum
 from typing import Optional, List, Union, Any
 import funcy as fn
+from decimal import Decimal
 
 
-class AvroFieldTypes(str, Enum):
-    str = 'string'
-    null = None
-    int = 'int'
-    float = 'float'
-    bytes = 'bytes'
-    long = 'long'
-    double = 'double'
-
-    @classmethod
-    def list(cls) -> List[str]:
-        return list(AvroFieldTypes.__members__.keys())
-
-
-class AvroField(BaseModel):
+class Field(BaseModel):
     name: str
-    type: Union[str, List[str]]
+    type: Any
     default: Optional[Any]
+
+    def _to_avro_type(self):
+        type_match = {
+            str: 'string',
+            None: "null",
+            int: 'int',
+            float: 'float',
+            bytes: 'bytes',
+            Decimal: 'decimal'
+        }
+        new_type = type_match[self.type]
+        self.type = new_type
+        return self
 
     @staticmethod
     def check_for_null_in_list(vals):

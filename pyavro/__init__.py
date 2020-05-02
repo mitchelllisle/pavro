@@ -1,2 +1,2 @@
-from pyavro.field import AvroField, AvroFieldTypes
-from pyavro.schema import AvroSchema
+from pyavro.field import Field
+from pyavro.schema import Schema
