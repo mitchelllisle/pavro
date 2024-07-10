@@ -1,3 +1,4 @@
 pydantic
 fastavro==0.22.13
 funcy==1.14
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
